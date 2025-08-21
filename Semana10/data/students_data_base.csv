@@ -1,6 +1,3 @@
 Estudiante,Seccion,Calificacion
-OSCAR,22N,"{'Español': 88, 'Ingles': 56, 'Historia': 78, 'Ciencias': 97}"
-OSCAR2,42M,"{'Español': 88, 'Ingles': 65, 'Historia': 78, 'Ciencias': 22}"
-OSCAR,22N,"{'Español': 88, 'Ingles': 56, 'Historia': 78, 'Ciencias': 97}"
-OSCAR2,42M,"{'Español': 88, 'Ingles': 65, 'Historia': 78, 'Ciencias': 22}"
-OSCAR3,29S,"{'Español': 78, 'Ingles': 96, 'Historia': 22, 'Ciencias': 36}"
+OSCAR,11N,"{'Español': 40, 'Ingles': 50, 'Historia': 60, 'Ciencias': 70}"
+OSCAR2,11M,"{'Español': 66, 'Ingles': 77, 'Historia': 66, 'Ciencias': 55}"

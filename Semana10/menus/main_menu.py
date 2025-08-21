@@ -5,11 +5,10 @@ from actions.students_average_grade import students_average_grade
 from data.export_csv import create_csv
 from data.import_csv import read_csv
 
-from data.db import students_db
 from utils.utils import validate_bd
 
 
-def main_menu(selection):
+def main_menu(selection, students_db):
 
     while True:
         try:

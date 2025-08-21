@@ -3,6 +3,9 @@ from menus.main_menu import main_menu
 
 def students_grading_system():
     print("Bienvenido, selecciona una de las siguientes opciones\n")
+
+    students_db = []
+
     while True:
         print("Menú\n"
               "1. Registra un estudiante\n"
@@ -23,7 +26,8 @@ def students_grading_system():
             break
 
         try:
-            main_menu(selection)
+
+            main_menu(selection, students_db)
         except Exception as e:
             print(f"Ocurrió un error: {e}\n")
 
