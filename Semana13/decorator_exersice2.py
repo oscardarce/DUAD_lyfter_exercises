@@ -12,42 +12,57 @@ class Operations:
                 if not isinstance(number, (int, float)):
                     raise ValueError(f"{number} no es número\n")
 
-            func(self, *args, **kwargs)
+            result = func(self, *args, **kwargs)
 
             print(
                 f"Estos son los argumentos: {args} y el fin del decorador\n ")
-
+            return result
         return wrapper
 
     @only_numbers
-    def add_numbers(self, *args):
+    def add_numbers(self, *args, **kwargs):
 
         for number in args:
             self.total = self.total + number
 
+        for value in kwargs.values():
+            self.total = self.total + value
         print(f"El total de tu suma es de {self.total}")
 
     @only_numbers
-    def subtract_numbers(self, *args):
+    def subtract_numbers(self, *args,  **kwargs):
 
         for number in args:
             self.total = self.total - number
 
+        for value in kwargs.values():
+            self.total = self.total - value
+
         print(f"El total de tu resta es de {self.total}")
 
     @only_numbers
-    def multiply_numbers(self, *args):
+    def multiply_numbers(self, *args, **kwargs):
 
         for number in args:
             self.total = self.total * number
 
+        for value in kwargs.values():
+            self.total = self.total * value
+
         print(f"El total de tu multiplicación es de {self.total}")
 
     @only_numbers
-    def divide_numbers(self, *args):
+    def divide_numbers(self, *args, **kwargs):
 
         for number in args:
+            if number == 0:
+                raise ZeroDivisionError("No se puede dividir por cero")
             self.total = self.total / number
+
+        for value in kwargs.values():
+            if value == 0:
+                raise ZeroDivisionError("No se puede dividir por cero")
+            self.total = self.total / value
 
         print(f"El total de tu división es de {self.total}")
 

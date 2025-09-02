@@ -18,7 +18,7 @@ def only_week_days(func):
         for day in args:
             if not isinstance(day, int) or day not in week.values():
                 print(f"{day} no es un día válido de la semana\n")
-                return
+                return None
 
         func(*args, **kwargs)
         print(
@@ -33,6 +33,7 @@ def number_picker(*args):
         for key, value in week.items():
             if value == day:
                 print(f"Este es el día: {key}")
+                return key
 
 
 number_picker(1, 3, 5, 7)

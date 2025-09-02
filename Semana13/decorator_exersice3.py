@@ -6,17 +6,23 @@ current_date = datetime.date.today()
 class User:
     def __init__(self, year, month, day):
         self.date_of_birth = datetime.date(year, month, day)
-        self.age = 0
+
+    @property
+    def age(self):
+
+        today = current_date
+
+        years = today.year - self.date_of_birth.year
+
+        return years
 
 
 def validate_is_adult(func):
 
     def wrapper(self, *args):
 
-        self.age = current_date.year - self.date_of_birth.year
-
         if self.age < 18:
-            raise ValueError(
+            raise PermissionError(
                 "Eres menor de edad,no puedes tomar alcohol aun")
 
         func(self, *args)
