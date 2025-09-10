@@ -56,8 +56,13 @@ class Playlist:
             print("Lista vacia no puedes remover canciones")
             return
 
+        if self.head.next is None:
+            self.head = None
+            print("Removiste la única canción en la lista")
+            return
+
         # Mientras hayan más elementos a la derecha movemos el head temporal hacia el final y nos detenemos en el penultimo
-        while current.next.next is not None:
+        while current.next.next is not None and current.next is not None:
             current = current.next
 
         # Colocamos el ultimo nodo como None por lo que el Garbage Collector lo borra
