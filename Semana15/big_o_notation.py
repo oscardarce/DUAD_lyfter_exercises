@@ -5,17 +5,17 @@ list_three = [-2, -3, -1, 1, -4, 3, 4, 5, 6, 7, 10, 11, 12, 13]
 # EJERCICIO  1
 
 
-def sort_numbers_asc(list_of_numbers):  # FUNCION BIG 0(N)
+def sort_numbers_asc(list_of_numbers):  # FUNCION BIG 0(2^N)
 
     # Big 0(1) va a ejecutarse el número de elementos de la lista
     print(
         f"*********ORDENANDO LISTA ASCENDENTE {list_of_numbers}*********")
 
-    # Big 0(1) va a ejecutarse el número de elementos de la lista
+    # Big 0(N)
     for outer_index in range(0, len(list_of_numbers)-1):
         was_ordered = False
 
-        # Big 0(n) va a ejecutarse el número de elementos de la lista 1 elevado al número elementos de la lista 2
+        # Big 0(2^n) va a ejecutarse el número de elementos de la lista 1 elevado al número elementos de la lista 2
         for inner_index in range(0, len(list_of_numbers)-1-outer_index):
 
             # Big 0(1) No es Ciclo o recursivo
@@ -41,9 +41,9 @@ def sort_numbers_asc(list_of_numbers):  # FUNCION BIG 0(N)
 # EJERCICIO 2
 
 
-def print_numbers_times_2(numbers_list):  # FUNCION Big 0(1)
+def print_numbers_times_2(numbers_list):  # FUNCION Big 0(N)
 
-    # Big 0(1) va a ejecutarse el número de elementos de la lista
+    # Big 0(N)
     for number in numbers_list:
         # Big 0(1) siempre se va a ejecutar 1 vez por cada elemento en la lista
         print(number * 2)
@@ -53,13 +53,13 @@ def print_numbers_times_2(numbers_list):  # FUNCION Big 0(1)
 
 ##################################################################################
 
-# FUNCION Big 0(n) ya que la función presenta un Big O(n)
+# FUNCION Big 0(2^n)
 def check_if_lists_have_an_equal(list_a, list_b):
 
-    # Big 0(1) va a ejecutarse el número de elementos de la lista #1
+    # Big 0(N)
     for element_a in list_a:
 
-        # Big 0(n) va a ejecutarse el número de elementos de la lista 1 elevado al número elementos de la lista 2
+        # Big 0(2^n) va a ejecutarse el número de elementos de la lista 1 elevado al número elementos de la lista 2
         for element_b in list_b:
 
             if element_a == element_b:   # Big 0(1) No es Ciclo o recursivo
@@ -72,11 +72,11 @@ def check_if_lists_have_an_equal(list_a, list_b):
 ##################################################################################
 
 
-def print_10_or_less_elements(list_to_print):  # FUNCION BIG O(1)
+def print_10_or_less_elements(list_to_print):  # FUNCION # Big 0(N)
 
-    list_len = len(list_to_print)  # Big 0(1) No es Ciclo o recursivo
+    list_len = len(list_to_print)  # Big 0(N)
 
-    # Ciclo Big 0(1) Ciclo siempre se ejecutara de 0 a 10
+    # Big 0(N)
     for index in range(min(list_len, 10)):
         print(list_to_print[index])  # Big 0(1) No es Ciclo o recursivo
 
@@ -85,10 +85,10 @@ def print_10_or_less_elements(list_to_print):  # FUNCION BIG O(1)
 
 ##################################################################################
 
-def generate_list_trios(list_a, list_b, list_c):  # FUNCION Big 0(2^n)
+def generate_list_trios(list_a, list_b, list_c):  # FUNCION Big 0(3^n)
     result_list = []  # Big 0(1) No es Ciclo o recursivo
 
-    # Ciclo Big 0(1) Ciclo siempre se ejecutara de 0 a 10
+    # Big 0(N)
     for element_a in list_a:
         print(f"Iteración {element_a}-----")
 
