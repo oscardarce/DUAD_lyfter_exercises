@@ -74,11 +74,11 @@ def check_if_lists_have_an_equal(list_a, list_b):
 
 def print_10_or_less_elements(list_to_print):  # FUNCION # Big 0(N)
 
-    list_len = len(list_to_print)  # Big 0(N)
+    list_len = len(list_to_print)  # Big 0(1)
 
     # Big 0(N)
-    for index in range(min(list_len, 10)):
-        print(list_to_print[index])  # Big 0(1) No es Ciclo o recursivo
+    for index in range(min(list_len, 10)): 
+        print(list_to_print[index])
 
 
 # print_10_or_less_elements(list_of_numbers)
@@ -92,11 +92,11 @@ def generate_list_trios(list_a, list_b, list_c):  # FUNCION Big 0(3^n)
     for element_a in list_a:
         print(f"Iteración {element_a}-----")
 
-        # Big 0(n) va a ejecutarse el número de elementos de la lista 1 elevado al número elementos de la lista 2
+        # Big 0(2^n) va a ejecutarse el número de elementos de la lista 1 elevado al número elementos de la lista 2
         for element_b in list_b:
             print(f"Iteración {element_b}******")
 
-            # Big 0(2^n) va a ejecutarse el número de elementos de la lista 1 elevado màs el nùmero de elementos de la lista 2 y por ultimo cada elemento de la lista 3
+            # Big 0(3^n) va a ejecutarse el número de elementos de la lista 1 elevado màs el nùmero de elementos de la lista 2 y por ultimo cada elemento de la lista 3
             for element_c in list_c:
                 print(element_c)
                 result_list.append(f'{element_a} {element_b} {element_c}')
