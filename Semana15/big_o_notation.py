@@ -72,7 +72,7 @@ def check_if_lists_have_an_equal(list_a, list_b):
 ##################################################################################
 
 
-def print_10_or_less_elements(list_to_print):  # FUNCION # Big 0(N)
+def print_10_or_less_elements(list_to_print):  # FUNCION # Big 0(1) (Siempre devuelve 10 o menos elementos a pesar de la cantidad de datos que ingresen por lista)
 
     list_len = len(list_to_print)  # Big 0(1)
 
