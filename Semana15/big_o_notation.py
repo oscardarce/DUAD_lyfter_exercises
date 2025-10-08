@@ -76,7 +76,7 @@ def print_10_or_less_elements(list_to_print):  # FUNCION # Big 0(1) (Siempre dev
 
     list_len = len(list_to_print)  # Big 0(1)
 
-    # Big 0(N)
+    # Big )
     for index in range(min(list_len, 10)): 
         print(list_to_print[index])
 

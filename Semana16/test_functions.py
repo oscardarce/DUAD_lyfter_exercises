@@ -1,0 +1,1 @@
+from ..Semana6.functions1 import add_numbers_of_the_list
