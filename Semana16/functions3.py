@@ -7,7 +7,6 @@ def add_numbers_of_the_list(lists_to_add):
     for number in range(len(lists_to_add)):
         add = add + lists_to_add[number]
 
-        print(add)
     return add
 
 

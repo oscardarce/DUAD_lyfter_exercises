@@ -26,7 +26,6 @@ def test_sort_numbers_asc_with_empty_list():
     assert expected_list == expected_ordered_lists
 
 
-
 def test_sort_numbers_asc_with_big_list():
 
     expected_list = sort_numbers_asc(random_list)
