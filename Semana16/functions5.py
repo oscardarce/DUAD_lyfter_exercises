@@ -5,6 +5,9 @@ i_love_sushi_word = "I love Nación Sushi"
 
 def mayus_or_minus(word):
 
+    if not isinstance(word, str):
+        raise TypeError("Debes agregar unicamente texto")
+
     new_word_without_spaces = word.replace(" ", "")
     counter_mayus = 0
     counter_min = 0

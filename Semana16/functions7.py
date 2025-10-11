@@ -22,6 +22,8 @@ def prime_numbers(numbers):
             print(f"{number} no es un número primo")
 
     print(f"Números primos encontrados: {prime_numbers_list}")
+    
+    return prime_numbers_list
 
 
 prime_numbers(list_of_numbers)
