@@ -1,16 +1,33 @@
 import FreeSimpleGUI as sg
+from db import all_data
 
 # Setear tema
 sg.theme("DarkBrown")
 
+
+def get_data_to_show():
+
+    info_array = []
+
+    for item in all_data:
+
+        if "Gasto" in item:
+            info_array.append([item["Gasto"], item["Monto"], "-", "-"])
+
+        elif "Ingreso" in item:
+            info_array.append(["-", "-", item["Ingreso"], item["Monto"]])
+
+    return info_array
+
+
+info_array = get_data_to_show()
+
+
 # Menú principal
-menu_def = [["Cargar", ["CSV", "JSON", "FTXT"]],
-            ["Exportar", ["CSV", "JSON", "FTXT"]]]
+menu_def = [["Cargar", ["CSV", "JSON", "TXT"]],
+            ["Exportar", ["CSV", "JSON", "TXT"]]]
 
 headings = ["Gastos", "Monto", "Ingresos", "Monto"]
-
-info_array = [["Pago de pañaes", 200, "Salario", 300],
-              ["Medicinas", 500, "Venta de repostería", 500]]
 
 
 home_layout = [
