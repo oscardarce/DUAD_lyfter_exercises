@@ -1,10 +1,10 @@
 
 import FreeSimpleGUI as sg
 from logica.category import Category
-from db import data_categories
 
 
-def create_category_window():
+def create_category_window(data_categories):
+
 
     category_layout = [
         [sg.Text("Nueva Categoría", font=("Verdana", 14, "bold"))],

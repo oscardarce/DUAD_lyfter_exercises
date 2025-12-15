@@ -1,14 +1,12 @@
 import FreeSimpleGUI as sg
-from logica.movimiento import Expense
-from db import all_data, data_categories
+from logica.movimiento import Movimiento
+from logica.validations import validate_movement_fields
 
 
-def create_expense_window():
+def create_expense_window(all_data, data_categories):
 
     expense_layout = [
         [sg.Text("Registra tu gasto", font=("Verdana", 15, "bold"))],
-        [sg.Text("¿Cual es tu gasto?", font=("Verdana", 9))],
-        [sg.Input(key="-EXPENSE_NAME-", default_text='')],
         [sg.Text("Monto de tu gasto", font=("Verdana", 9))],
         [sg.Input(key="-EXPENSE_AMOUNT-", default_text='')],
         [sg.Text("Selecciona una categoría", font=("Verdana", 9))],
@@ -18,7 +16,8 @@ def create_expense_window():
          readonly=True,
          key="-CATEGORY-",
          size=(30, 1)
-         )],        [sg.HorizontalSeparator(p=20, color="red")],
+         )],
+        [sg.HorizontalSeparator(p=20, color="red")],
         [sg.Button("Guardar"), sg.Button("Cancelar")],
 
     ]
@@ -32,26 +31,34 @@ def create_expense_window():
             break
 
         if event == "Guardar":
-
-            expense_name = values['-EXPENSE_NAME-'].strip()
             expense_amount = values['-EXPENSE_AMOUNT-'].strip()
             category_selected = values['-CATEGORY-'].strip()
 
-            new_expense = Expense(expense_name, expense_amount)
+            is_valid = validate_movement_fields(expense_amount)
 
-            all_data.append(
-                {
+            if not is_valid:
+                continue
+
+            validate_movement_fields(expense_amount)
+
+            try:
+                new_expense = Movimiento(expense_amount)
+
+                all_data.append({
                     "Categoria": category_selected,
-                    "Gasto": new_expense.expense_name,
-                    "Monto":  new_expense.amount
-                }
-            )
+                    "Tipo": "Gasto",
+                    "Monto": new_expense.amount
+                })
 
-            print(all_data)
+                print(all_data)
 
-            sg.popup(f"Gasto creado: {values['-EXPENSE_NAME-']}")
-            expense_window['-EXPENSE_NAME-'].update('')
-            expense_window['-EXPENSE_AMOUNT-'].update('')
+                sg.popup(
+                    f"Ingreso creado: {category_selected} : {new_expense.amount}"
+                )
+                expense_window['-EXPENSE_AMOUNT-'].update('')
+
+            except Exception as e:
+                sg.popup_error(f"Error al crear el gasto: {e}")
 
         if event == "Cancelar":
             break
