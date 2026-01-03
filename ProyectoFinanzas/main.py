@@ -1,5 +1,5 @@
 import FreeSimpleGUI as sg
-from logica.gestor import GestorFinanzas
+from logica.finance_manager import FinanceManager
 from interfaces.category_layout import create_category_window
 from interfaces.expenses_layout import create_expense_window
 from interfaces.income_layout import create_income_window
@@ -8,7 +8,7 @@ from persistencia.csv_save_and_load import save_in_csv_file, load_data_csv
 # Setear tema
 sg.theme("DarkBrown")
 
-app_instance = GestorFinanzas()
+app_instance = FinanceManager()
 
 # Cargar datos previos del csv antes de crear el window de main
 load_data = load_data_csv(app_instance)

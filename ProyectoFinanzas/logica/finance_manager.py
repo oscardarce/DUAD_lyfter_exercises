@@ -1,13 +1,12 @@
 import FreeSimpleGUI as sg
-from logica.categories import Categoria
-from logica.movement import Movimiento
+from logica.movement import Movement
 
 
-class GestorFinanzas:
+class FinanceManager:
 
     def __init__(self):
-        self.categories: list[Categoria] = []
-        self.movements: list[Movimiento] = []
+        self.categories: list = []
+        self.movements: list[Movement] = []
 
     def create_category(self, name):
         name = name.strip()
@@ -19,22 +18,17 @@ class GestorFinanzas:
             sg.popup_error(f"La categoría {name} ya existe")
             return False
 
-        self.categories.append(Categoria(name))
+        self.categories.append(name)
         return True
 
     def get_category(self, name):
-        for category in self.categories:
-            if category.name == name:
-                return category
-        return None
+        if name in self.categories:
+            return name
+        else:
+            return None
 
     def get_category_names(self):
-        category_names = []
-
-        for category in self.categories:
-            category_names.append(category.name)
-
-        return category_names
+        return self.categories
 
     def create_expense(self, category_name, amount):
         category = self.get_category(category_name)
@@ -52,7 +46,7 @@ class GestorFinanzas:
             return False
 
         self.movements.append(
-            Movimiento(category, "Gasto", amount_float)
+            Movement(category, "Gasto", amount_float)
         )
         return True
 
@@ -72,7 +66,7 @@ class GestorFinanzas:
             return False
 
         self.movements.append(
-            Movimiento(category, "Ingreso", amount_float)
+            Movement(category, "Ingreso", amount_float)
         )
         return True
 
@@ -81,7 +75,7 @@ class GestorFinanzas:
 
         for movement in self.movements:
             fila = [
-                movement.category.name,
+                movement.category,
                 movement.type,
                 f"{movement.amount:.2f}"
             ]

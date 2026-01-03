@@ -24,7 +24,7 @@ def save_in_csv_file(data):
     sg.popup(f"Datos guardados: {len(data)}")
 
 
-def load_data_csv(gestor_instance):
+def load_data_csv(finance_manager_instance):
 
     if not os.path.exists(path):
         return 0
@@ -41,15 +41,15 @@ def load_data_csv(gestor_instance):
                 amount = row["Monto"]
 
                 # Crear la categoría si no existe
-                if not gestor_instance.get_category(category_name):
-                    gestor_instance.create_category(category_name)
+                if not finance_manager_instance.get_category(category_name):
+                    finance_manager_instance.create_category(category_name)
 
                 # Crear el movimiento según su tipo
                 if movement_type == "Gasto":
-                    if gestor_instance.create_expense(category_name, amount):
+                    if finance_manager_instance.create_expense(category_name, amount):
                         loaded_data += 1
                 elif movement_type == "Ingreso":
-                    if gestor_instance.create_income(category_name, amount):
+                    if finance_manager_instance.create_income(category_name, amount):
                         loaded_data += 1
 
         return loaded_data
