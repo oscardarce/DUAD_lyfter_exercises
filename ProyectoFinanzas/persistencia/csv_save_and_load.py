@@ -1,6 +1,5 @@
 import csv
 import os
-import FreeSimpleGUI as sg
 
 file_name = "data_base.csv"
 path = f"{file_name}"

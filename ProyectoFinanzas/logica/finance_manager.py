@@ -1,4 +1,3 @@
-import FreeSimpleGUI as sg
 from logica.movement import Movement
 
 
