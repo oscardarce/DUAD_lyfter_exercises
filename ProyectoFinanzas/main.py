@@ -12,6 +12,9 @@ app_instance = FinanceManager()
 
 # Cargar datos previos del csv antes de crear el window de main
 load_data = load_data_csv(app_instance)
+if not load_data:
+    sg.popup(f"No se han cargado archivos previos")
+
 
 # Obtener los datos para el layout
 init_data = app_instance.get_table_data() if load_data > 0 else []
@@ -21,7 +24,7 @@ menu_def = [
     ['Guardar', 'CSV']
 ]
 
-headings = ["Categoria", "Tipo", "Monto"]
+headings = ["Categoria", "Tipo", "Monto", "Descripción"]
 
 home_layout = [
     [sg.Menu(menu_def, key="-MENU-")],
@@ -31,7 +34,7 @@ home_layout = [
     [sg.Table(
         values=init_data,
         headings=headings,
-        max_col_width=135,
+        max_col_width=185,
         auto_size_columns=True,
         display_row_numbers=True,
         justification="left",
@@ -50,6 +53,7 @@ while True:
 
     if event == sg.WIN_CLOSED:
         save_in_csv_file(app_instance.get_table_data())
+        sg.popup(f"Datos guardados: {len(app_instance.get_table_data())}")
         break
 
     if event == "Nueva categoria":
@@ -66,5 +70,7 @@ while True:
 
     elif event == "CSV":
         save_in_csv_file(app_instance.get_table_data())
+        sg.popup(f"Datos guardados: {len(app_instance.get_table_data())}")
+
 
 main_window.close()

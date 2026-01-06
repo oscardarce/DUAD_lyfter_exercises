@@ -11,11 +11,9 @@ class FinanceManager:
     def create_category(self, name):
         name = name.strip()
         if not name:
-            sg.popup_error("El nombre de la categoría no puede estar vacío")
             return False
 
         if self.get_category(name):
-            sg.popup_error(f"La categoría {name} ya existe")
             return False
 
         self.categories.append(name)
@@ -30,43 +28,37 @@ class FinanceManager:
     def get_category_names(self):
         return self.categories
 
-    def create_expense(self, category_name, amount):
+    def create_expense(self, category_name, amount, description):
         category = self.get_category(category_name)
         if not category:
-            sg.popup_error("La categoría seleccionada no existe")
             return False
 
         try:
             amount_float = float(amount)
             if amount_float <= 0:
-                sg.popup_error("El monto debe ser mayor a 0")
                 return False
         except ValueError:
-            sg.popup_error("El monto debe ser un número válido")
             return False
 
         self.movements.append(
-            Movement(category, "Gasto", amount_float)
+            Movement(category, "Gasto", amount_float, description)
         )
         return True
 
-    def create_income(self, category_name, amount):
+    def create_income(self, category_name, amount, description):
         category = self.get_category(category_name)
         if not category:
-            sg.popup_error("La categoría seleccionada no existe")
             return False
 
         try:
             amount_float = float(amount)
             if amount_float <= 0:
-                sg.popup_error("El monto debe ser mayor a 0")
                 return False
         except ValueError:
-            sg.popup_error("El monto debe ser un número válido")
             return False
 
         self.movements.append(
-            Movement(category, "Ingreso", amount_float)
+            Movement(category, "Ingreso", amount_float, description)
         )
         return True
 
@@ -77,7 +69,8 @@ class FinanceManager:
             fila = [
                 movement.category,
                 movement.type,
-                f"{movement.amount:.2f}"
+                f"{movement.amount:.2f}",
+                movement.description
             ]
             data_table.append(fila)
 

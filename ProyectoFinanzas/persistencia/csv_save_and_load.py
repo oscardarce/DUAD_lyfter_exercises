@@ -7,7 +7,7 @@ path = f"{file_name}"
 
 
 def save_in_csv_file(data):
-    fieldnames = ["Categoria", "Tipo", "Monto"]
+    fieldnames = ["Categoria", "Tipo", "Monto", "Descripcion"]
 
     with open(path, "w", newline="", encoding="utf-8") as file:
         csv_writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -17,11 +17,10 @@ def save_in_csv_file(data):
             dictionary = {
                 "Categoria": row[0],
                 "Tipo": row[1],
-                "Monto": row[2]
+                "Monto": row[2],
+                "Descripcion": row[3]
             }
             csv_writer.writerow(dictionary)
-
-    sg.popup(f"Datos guardados: {len(data)}")
 
 
 def load_data_csv(finance_manager_instance):
@@ -39,6 +38,7 @@ def load_data_csv(finance_manager_instance):
                 category_name = row["Categoria"]
                 movement_type = row["Tipo"]
                 amount = row["Monto"]
+                description = row["Descripcion"]
 
                 # Crear la categoría si no existe
                 if not finance_manager_instance.get_category(category_name):
@@ -46,14 +46,13 @@ def load_data_csv(finance_manager_instance):
 
                 # Crear el movimiento según su tipo
                 if movement_type == "Gasto":
-                    if finance_manager_instance.create_expense(category_name, amount):
+                    if finance_manager_instance.create_expense(category_name, amount, description):
                         loaded_data += 1
                 elif movement_type == "Ingreso":
-                    if finance_manager_instance.create_income(category_name, amount):
+                    if finance_manager_instance.create_income(category_name, amount, description):
                         loaded_data += 1
 
         return loaded_data
 
-    except Exception as e:
-        sg.popup_error(f"Error al cargar datos: {str(e)}")
+    except Exception:
         return 0
