@@ -55,6 +55,11 @@ def create_expense_window(app_instance):
                     sg.popup_error("El movimiento debe tener una descripción")
                     continue
 
+                if len(category_selected.strip()) >= 1:
+                    sg.popup_error(
+                        "El campo de categoría no puede estar vacio.")
+                    continue
+
             except ValueError:
                 sg.popup_error("El monto debe ser un número válido")
                 continue

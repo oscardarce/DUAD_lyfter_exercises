@@ -31,6 +31,8 @@ class FinanceManager:
         category = self.get_category(category_name)
         if not category:
             return False
+        if not description:
+            return False
 
         try:
             amount_float = float(amount)
@@ -47,6 +49,8 @@ class FinanceManager:
     def create_income(self, category_name, amount, description):
         category = self.get_category(category_name)
         if not category:
+            return False
+        if not description:
             return False
 
         try:

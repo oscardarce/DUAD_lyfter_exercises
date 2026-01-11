@@ -52,13 +52,14 @@ def create_income_window(app_instance):
                     sg.popup_error("El monto debe ser mayor a 0")
                     continue
 
-                if not income_description:
+                if len(category_selected.strip()) >= 1:
                     sg.popup_error(
-                        "Tu movimiento debe tener una descripción")
+                        "El campo de categoría no puede estar vacio.")
                     continue
 
             except ValueError:
-                sg.popup_error("El monto debe ser un número válido")
+                sg.popup_error(
+                    "El monto debe ser un número válido o no estar vacio")
                 continue
 
             try:
