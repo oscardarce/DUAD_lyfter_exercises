@@ -51,13 +51,13 @@ def create_expense_window(app_instance):
                     sg.popup_error("La categoría seleccionada no existe")
                     continue
 
-                if not expense_description:
-                    sg.popup_error("El movimiento debe tener una descripción")
+                if not expense_description.strip():
+                    sg.popup_error("El movimiento debe tener una descripción.")
                     continue
 
-                if len(category_selected.strip()) >= 1:
+                if len(category_selected.strip()) == 0:
                     sg.popup_error(
-                        "El campo de categoría no puede estar vacio.")
+                        "El campo de categoría no puede estar vacío.")
                     continue
 
             except ValueError:
