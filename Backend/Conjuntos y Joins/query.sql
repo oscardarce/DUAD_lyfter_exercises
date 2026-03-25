@@ -1,6 +1,5 @@
-SELECT b.id,
-       b.name
-FROM book AS b
-INNER JOIN rent AS r
-    ON b.id = r.id_book
-WHERE r.status = 'Overdue';
+SELECT a.id,
+    a.name AS author_name,
+    b.name AS book_name
+FROM author AS a
+    INNER JOIN book AS b ON a.id = b.id_author;
