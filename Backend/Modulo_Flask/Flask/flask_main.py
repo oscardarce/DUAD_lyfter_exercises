@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import json
 import os
 
+
 # Este es el punto de entrada a la aplicación
 app = Flask(__name__)
 
@@ -173,6 +174,6 @@ def delete():
 
 
 if __name__ == "__main__":
-    #Cargamos datos de un Json ya creado o se crea limpio []
+    # Cargamos datos de un Json ya creado o se crea limpio []
     load_or_create_json()
     app.run(host="localhost", debug=True)
