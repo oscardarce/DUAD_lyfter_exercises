@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import json
 import os
 
+
 # Este es el punto de entrada a la aplicación
 app = Flask(__name__)
 
@@ -28,58 +29,62 @@ def load_or_create_json():
             json.dump(task_list, file, indent=2)
 
 
-# Mostrar en POSTMAN mensaje de solicitud al API y el total de tareas en la base de datos.
+# Mostrar en POSTMAN mensajes de solicitud al API y el total de tareas en la base de datos.
 @app.route("/", methods=["GET"])
 def main():
     return jsonify({
-        "mensaje": "API de tareas activa",
-        "total_tareas": len(task_list),
+        "messages": "API de tareas activa",
+        "total_tasks": len(task_list),
     })
 
 
 # Crear data
-@app.route("/create", methods=["POST"])
+@app.route("/tasks", methods=["POST"])
 def create():
+    load_or_create_json()
 
     try:
         # Validaciones
-        if "id" not in request.json:
-            raise ValueError("La request debe tener un id")
-        if "title" not in request.json:
-            raise ValueError("La request debe tener un titulo")
-        if "description" not in request.json:
-            raise ValueError("La request debe tener una descripción")
-        if "state" not in request.json:
-            raise ValueError("La request debe tener un estado")
-        if request.json["state"] not in valid_states:
+        if not request.json:
             raise ValueError(
-                "El estado debe ser: Por Hacer, En Progreso o Completada")
+                "El body debe ser un JSON válido con Content-Type: application/json")
+        if not request.json.get("id", "").strip():
+            raise ValueError("La request debe tener un id")
+        if not request.json.get("title", "").strip():
+            raise ValueError("La request debe tener un titulo")
+        if not request.json.get("description", "").strip():
+            raise ValueError("La request debe tener una descripción")
+        if not request.json.get("state", "").strip():
+            raise ValueError("La request debe tener un estado")
         if any(task["id"] == request.json["id"] for task in task_list):
             raise ValueError("El id ya existe")
 
         # Request
-        nueva_tarea = {
+        new_task = {
             "id":          request.json["id"],
             "title":       request.json["title"],
             "description": request.json["description"],
             "state":       request.json["state"],
         }
         # Guardar la data en memoria
-        task_list.append(nueva_tarea)
+        task_list.append(new_task)
 
         # Guardamos la data en la base de datos
         with open(TASK_LIST_PATH, "w", encoding="utf-8") as file:
             json.dump(task_list, file, indent=2)
 
-        return jsonify({"mensaje": "Tarea creada", "tarea": nueva_tarea}), 201
+        return jsonify({"message": "Tarea creada", "task": new_task}), 201
 
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
 
 # Listar data
-@app.route("/list", methods=["GET"])
+@app.route("/tasks", methods=["GET"])
 def get():
+
+    load_or_create_json()
+
     state_filter = request.args.get("state")
 
     # Devolvemos solo lo que venga en los querys parameters que contenga el mismo estado
@@ -88,21 +93,28 @@ def get():
             task for task in task_list if task["state"] == state_filter]
         return jsonify({
             "total": len(filtered_tasks),
-            "tareas": filtered_tasks
+            "tasks": filtered_tasks
         }), 200
     else:
         return jsonify({
             "total": len(task_list),
-            "tareas": task_list
+            "tasks": task_list
         }), 200
 
 
 # Editar data
-@app.route("/edit", methods=["PUT"])
+@app.route("/tasks", methods=["PUT"])
 def edit():
+
+    load_or_create_json()
+
     try:
         task_id = request.json.get("id")
         task_title = request.json.get("title")
+
+        if not request.json:
+            raise ValueError(
+                "El body debe ser un JSON válido con Content-Type: application/json")
 
         if not task_id and not task_title:
             raise ValueError(
@@ -131,22 +143,32 @@ def edit():
         if "description" in request.json:
             task_found["description"] = request.json["description"]
         if "state" in request.json:
+            if request.json["state"] not in valid_states:
+                raise ValueError(
+                    "El estado debe ser: Por Hacer, En Progreso o Completada")
             task_found["state"] = request.json["state"]
 
         with open(TASK_LIST_PATH, "w", encoding="utf-8") as file:
             json.dump(task_list, file, indent=2)
 
-        return jsonify({"mensaje": "Tarea actualizada", "tarea": task_found}), 200
+        return jsonify({"message": "Tarea actualizada", "task": task_found}), 200
 
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
 
-# Eliminar ada
-@app.route("/delete", methods=["DELETE"])
+# Eliminar data
+@app.route("/tasks", methods=["DELETE"])
 def delete():
+
+    load_or_create_json()
+
     try:
         task_id = request.json.get("id")
+
+        if not request.json:
+            raise ValueError(
+                "El body debe ser un JSON válido con Content-Type: application/json")
 
         if not task_id:
             raise ValueError(
@@ -166,13 +188,13 @@ def delete():
         with open(TASK_LIST_PATH, "w", encoding="utf-8") as file:
             json.dump(task_list, file, indent=2)
 
-        return jsonify({"mensaje": "Tarea eliminada", "tarea": task_found}), 200
+        return jsonify({"message": "Tarea eliminada", "task": task_found}), 200
 
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
 
 if __name__ == "__main__":
-    #Cargamos datos de un Json ya creado o se crea limpio []
+    # Cargamos datos de un Json ya creado o se crea limpio []
     load_or_create_json()
     app.run(host="localhost", debug=True)
