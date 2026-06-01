@@ -8,6 +8,7 @@ DB_PASSWORD = "1234"
 DB_HOST = "localhost"
 DB_PORT = "5432"
 
+
 class ConnectionManager:
 
     def __init__(self, db_name=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST, port=DB_PORT):
@@ -22,13 +23,7 @@ class ConnectionManager:
             print("Te has conectado a la base de datos de Lyfter Car Rental")
             self.cursor = self.connection.cursor()
 
-            self.setup_database()
-
-            mock_cars = self.load_mock_data("mock_car_data.json")
-            mock_users = self.load_mock_data("mock_user_data.json")
-
-            # Insertamos los datos en la base de datos
-            self.seed_database(mock_users, mock_cars)
+            self.check_and_initialize_db()
 
     def create_connection(self):
         try:
@@ -92,22 +87,25 @@ class ConnectionManager:
                 id SERIAL PRIMARY KEY,
                 id_user INT REFERENCES users(id),
                 id_car INT REFERENCES cars(id),
-                rental_date DATE DEFAULT CURRENT_DATE,
+                rental_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 rental_state VARCHAR(50)
             );
         """)
         self.connection.commit()
 
     def load_mock_data(self, mock_data_filename):
-        mock_data_path = os.path.join(os.path.dirname(__file__), mock_data_filename)
+        mock_data_path = os.path.join(
+            os.path.dirname(__file__), mock_data_filename)
         try:
             with open(mock_data_path, 'r', encoding='utf-8') as file:
                 return json.load(file)
         except FileNotFoundError:
-            print(f"Error: No se encontró el archivo en la ruta {mock_data_path}")
+            print(
+                f"Error: No se encontró el archivo en la ruta {mock_data_path}")
             return None
         except json.JSONDecodeError:
-            print(f"Error: El archivo {mock_data_filename} no es un JSON válido.")
+            print(
+                f"Error: El archivo {mock_data_filename} no es un JSON válido.")
             return None
 
     def seed_database(self, mock_users, mock_cars):
@@ -118,8 +116,10 @@ class ConnectionManager:
             """
             for user in mock_users:
                 self.cursor.execute(user_query, (
-                    user.get("first_name"), user.get("email"), user.get("username"),
-                    user.get("password"), user.get("birthdate"), user.get("bank_account_state")
+                    user.get("first_name"), user.get(
+                        "email"), user.get("username"),
+                    user.get("password"), user.get(
+                        "birthdate"), user.get("bank_account_state")
                 ))
             print(f"Inserted {len(mock_users)} mock users.")
 
@@ -130,8 +130,35 @@ class ConnectionManager:
             """
             for car in mock_cars:
                 self.cursor.execute(car_query, (
-                    car.get("brand"), car.get("model"), car.get("year"), "available"
+                    car.get("brand"), car.get(
+                        "model"), car.get("year"), "available"
                 ))
             print(f"Inserted {len(mock_cars)} mock cars.")
 
         self.connection.commit()
+
+    def check_and_initialize_db(self):
+        try:
+            # Intentamos contar los usuarios para ver si la base de datos ya existe y tiene datos
+            self.cursor.execute("SELECT COUNT(*) FROM users;")
+            count = self.cursor.fetchone()[0]
+
+            if count > 0:
+                print(
+                    "La base de datos ya se inicializo anteriormente. No se insertarán datos.")
+                return
+
+        except Exception:
+            # Si la tabla no existe, PostgreSQL lanza un error.
+            # Hacemos rollback para limpiar la transacción fallida y continuar.
+            self.connection.rollback()
+            print("Database empty or missing. Running initial setup...")
+
+        # Si llegamos aquí, es porque la DB no existía o estaba vacía
+        self.setup_database()
+
+        mock_cars = self.load_mock_data("mock_car_data.json")
+        mock_users = self.load_mock_data("mock_user_data.json")
+        self.seed_database(mock_users, mock_cars)
+
+        print("Database setup and seeding complete.")

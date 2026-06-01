@@ -5,7 +5,7 @@
     "username": "aliquam",
     "password": "cK8,i#Z{?jLGt",
     "birthdate": "6/1/2025",
-    "bank_account_state": "sapien iaculis"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Joey",
@@ -13,7 +13,7 @@
     "username": "curabitur",
     "password": "xJ6_K=\\n,",
     "birthdate": "4/14/2026",
-    "bank_account_state": "tortor risus"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Alexine",
@@ -21,7 +21,7 @@
     "username": "in",
     "password": "dP1.A.&@",
     "birthdate": "5/1/2026",
-    "bank_account_state": "nec molestie"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Brenda",
@@ -29,7 +29,7 @@
     "username": "molestie",
     "password": "tH9$FwQfAJ=YPH",
     "birthdate": "9/8/2025",
-    "bank_account_state": "congue elementum"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Sharl",
@@ -37,7 +37,7 @@
     "username": "sapien",
     "password": "hE5(P6Ib%Hrc,gG4",
     "birthdate": "11/6/2025",
-    "bank_account_state": "feugiat non"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Victor",
@@ -45,7 +45,7 @@
     "username": "potenti",
     "password": "mV2#g)l49%qt=",
     "birthdate": "7/9/2025",
-    "bank_account_state": "nulla nunc"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Brett",
@@ -53,7 +53,7 @@
     "username": "leo",
     "password": "dU6}9sbp",
     "birthdate": "10/13/2025",
-    "bank_account_state": "in imperdiet"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Garrick",
@@ -61,7 +61,7 @@
     "username": "ac",
     "password": "wB4\"3<?Miffng_",
     "birthdate": "1/14/2026",
-    "bank_account_state": "a pede"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Adolf",
@@ -69,7 +69,7 @@
     "username": "sapien",
     "password": "gN7\"!qJ8H}A!",
     "birthdate": "9/29/2025",
-    "bank_account_state": "sit amet"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Emmie",
@@ -77,7 +77,7 @@
     "username": "nulla",
     "password": "vP4_h!Kd",
     "birthdate": "6/28/2025",
-    "bank_account_state": "consequat metus"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Miriam",
@@ -85,7 +85,7 @@
     "username": "aenean",
     "password": "nY6(%was",
     "birthdate": "1/9/2026",
-    "bank_account_state": "et ultrices"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Flore",
@@ -93,7 +93,7 @@
     "username": "augue",
     "password": "yD5}Ae0ik,+oI?0",
     "birthdate": "2/28/2026",
-    "bank_account_state": "convallis morbi"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Matelda",
@@ -101,7 +101,7 @@
     "username": "ipsum",
     "password": "tS4<$!kXV>62=VC",
     "birthdate": "12/13/2025",
-    "bank_account_state": "mauris lacinia"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Issi",
@@ -109,7 +109,7 @@
     "username": "nibh",
     "password": "hB9.p+ux<qL0",
     "birthdate": "2/22/2026",
-    "bank_account_state": "libero rutrum"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Antonino",
@@ -117,7 +117,7 @@
     "username": "in",
     "password": "eN0,qO~LaX",
     "birthdate": "11/11/2025",
-    "bank_account_state": "non sodales"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Shirline",
@@ -125,7 +125,7 @@
     "username": "pede",
     "password": "cL4))qaxo&fAw1w",
     "birthdate": "6/17/2025",
-    "bank_account_state": "duis aliquam"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Hobard",
@@ -133,7 +133,7 @@
     "username": "eget",
     "password": "nX3.H&QVOyt6{_",
     "birthdate": "8/2/2025",
-    "bank_account_state": "viverra pede"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Alastair",
@@ -141,7 +141,7 @@
     "username": "cras",
     "password": "uO4+\\r>E(Fei",
     "birthdate": "11/12/2025",
-    "bank_account_state": "consequat nulla"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Kirby",
@@ -149,7 +149,7 @@
     "username": "nisi",
     "password": "qS9`dHw2i=_",
     "birthdate": "10/20/2025",
-    "bank_account_state": "purus eu"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Eleen",
@@ -157,7 +157,7 @@
     "username": "erat",
     "password": "oG4#JjMb~e.q)SM6",
     "birthdate": "5/17/2025",
-    "bank_account_state": "lectus vestibulum"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Horacio",
@@ -165,7 +165,7 @@
     "username": "nam",
     "password": "mE2_zcq@fa1",
     "birthdate": "6/19/2025",
-    "bank_account_state": "vulputate luctus"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Abbie",
@@ -173,7 +173,7 @@
     "username": "sed",
     "password": "pY8,Z?rnHopz",
     "birthdate": "4/10/2026",
-    "bank_account_state": "vestibulum sagittis"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Eugenius",
@@ -181,7 +181,7 @@
     "username": "sollicitudin",
     "password": "dP9=JsXrF",
     "birthdate": "12/28/2025",
-    "bank_account_state": "eu massa"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Boycey",
@@ -189,7 +189,7 @@
     "username": "in",
     "password": "wQ9'G\"I'x.XEqH",
     "birthdate": "2/24/2026",
-    "bank_account_state": "pede posuere"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Gris",
@@ -197,7 +197,7 @@
     "username": "in",
     "password": "vN5}EYO0!@?Cgef",
     "birthdate": "9/10/2025",
-    "bank_account_state": "consequat ut"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Lou",
@@ -205,7 +205,7 @@
     "username": "convallis",
     "password": "qV6~ZxAM/1`p",
     "birthdate": "7/8/2025",
-    "bank_account_state": "in consequat"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Vita",
@@ -213,7 +213,7 @@
     "username": "luctus",
     "password": "rT5<iqaZ%)",
     "birthdate": "1/20/2026",
-    "bank_account_state": "viverra diam"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Oliver",
@@ -221,7 +221,7 @@
     "username": "a",
     "password": "uB0<0x4u9rSB_rK6",
     "birthdate": "3/31/2026",
-    "bank_account_state": "venenatis tristique"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Angy",
@@ -229,7 +229,7 @@
     "username": "donec",
     "password": "cF8+eUmEk",
     "birthdate": "11/3/2025",
-    "bank_account_state": "sem duis"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Dionne",
@@ -237,7 +237,7 @@
     "username": "aliquet",
     "password": "gH9$8p{+0",
     "birthdate": "12/24/2025",
-    "bank_account_state": "in sagittis"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Emalee",
@@ -245,7 +245,7 @@
     "username": "pretium",
     "password": "wI1\"vb|7Wg3\\Y\"a!",
     "birthdate": "8/19/2025",
-    "bank_account_state": "faucibus orci"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Almira",
@@ -253,7 +253,7 @@
     "username": "a",
     "password": "kS8><dHJb",
     "birthdate": "5/10/2026",
-    "bank_account_state": "a ipsum"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Bordie",
@@ -261,7 +261,7 @@
     "username": "nibh",
     "password": "dP4>9l36tvh|)Y",
     "birthdate": "9/27/2025",
-    "bank_account_state": "magna ac"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Diahann",
@@ -269,7 +269,7 @@
     "username": "in",
     "password": "gK1%4z{7V",
     "birthdate": "12/6/2025",
-    "bank_account_state": "vestibulum vestibulum"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Virginie",
@@ -277,7 +277,7 @@
     "username": "eros",
     "password": "aX5$uxV$~uwKx",
     "birthdate": "8/19/2025",
-    "bank_account_state": "et tempus"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Llewellyn",
@@ -285,7 +285,7 @@
     "username": "aenean",
     "password": "aJ0*A2d~T,AR8t0",
     "birthdate": "8/29/2025",
-    "bank_account_state": "dui vel"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Dyan",
@@ -293,7 +293,7 @@
     "username": "eget",
     "password": "vI1%MzigJ#A+",
     "birthdate": "11/2/2025",
-    "bank_account_state": "ut nulla"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Ambrosio",
@@ -301,7 +301,7 @@
     "username": "nisl",
     "password": "fY8'f3~G/DsQg",
     "birthdate": "5/7/2026",
-    "bank_account_state": "vulputate elementum"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Hillery",
@@ -309,7 +309,7 @@
     "username": "convallis",
     "password": "wN0$|1XGNp(",
     "birthdate": "9/24/2025",
-    "bank_account_state": "in lacus"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Jefferson",
@@ -317,7 +317,7 @@
     "username": "vitae",
     "password": "dQ2\"{)tm",
     "birthdate": "4/28/2026",
-    "bank_account_state": "ligula pellentesque"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Gregoor",
@@ -325,7 +325,7 @@
     "username": "ante",
     "password": "bA6{r/1\"",
     "birthdate": "7/2/2025",
-    "bank_account_state": "nam nulla"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Coleen",
@@ -333,7 +333,7 @@
     "username": "in",
     "password": "lE0?ghkyAUYi2&",
     "birthdate": "7/31/2025",
-    "bank_account_state": "sapien ut"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Sheeree",
@@ -341,7 +341,7 @@
     "username": "sed",
     "password": "oY9.GIv(5bYf_dpO",
     "birthdate": "5/12/2025",
-    "bank_account_state": "curabitur in"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Gladi",
@@ -349,7 +349,7 @@
     "username": "tristique",
     "password": "wQ1!s%uz@Wzro",
     "birthdate": "2/25/2026",
-    "bank_account_state": "porta volutpat"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Kara-lynn",
@@ -357,7 +357,7 @@
     "username": "blandit",
     "password": "xC0%Wr%I%md)'x(S",
     "birthdate": "4/4/2026",
-    "bank_account_state": "proin leo"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Lorrie",
@@ -365,7 +365,7 @@
     "username": "justo",
     "password": "rT3{9C0I",
     "birthdate": "2/10/2026",
-    "bank_account_state": "leo pellentesque"
+    "bank_account_state": "inactive"
   },
   {
     "first_name": "Adrien",
@@ -373,7 +373,7 @@
     "username": "sit",
     "password": "xE6%+=rwH9$@%8",
     "birthdate": "11/2/2025",
-    "bank_account_state": "dapibus augue"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Nevin",
@@ -381,7 +381,7 @@
     "username": "tellus",
     "password": "qR0+ST{<N!\"",
     "birthdate": "4/24/2026",
-    "bank_account_state": "aliquet pulvinar"
+    "bank_account_state": "active"
   },
   {
     "first_name": "Zia",
@@ -389,7 +389,7 @@
     "username": "volutpat",
     "password": "rK9/gvheS/zo(Z",
     "birthdate": "6/27/2025",
-    "bank_account_state": "nulla nunc"
+    "bank_account_state": "defaulted"
   },
   {
     "first_name": "Kerianne",
@@ -397,6 +397,6 @@
     "username": "mauris",
     "password": "lV3=p{u\"H'",
     "birthdate": "2/5/2026",
-    "bank_account_state": "ligula nec"
+    "bank_account_state": "active"
   }
 ]
