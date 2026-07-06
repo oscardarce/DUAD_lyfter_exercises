@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine, inspect
-from tables import metadata
+from sqlalchemy.orm import sessionmaker
+from models import Base
 
 DB_NAME = "Orm_Lyfter"
 DB_USER = "postgres"
@@ -16,6 +17,7 @@ class DbConnection:
         self.host = host
         self.port = port
         self.engine = create_engine(self.build_uri())
+        self.Session = sessionmaker(bind=self.engine)
 
     def build_uri(self):
         return f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.db_name}"
@@ -23,8 +25,8 @@ class DbConnection:
     def setup_database(self):
         exists = set(inspect(self.engine).get_table_names())
 
-        metadata.create_all(self.engine)
+        Base.metadata.create_all(self.engine)
 
-        for table in metadata.tables.values():
+        for table in Base.metadata.tables.values():
             state = "ya existía" if table.name in exists else "creada"
             print(f"'{table.name}' : {state}")
