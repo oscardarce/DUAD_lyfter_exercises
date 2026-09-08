@@ -18,13 +18,28 @@ from jwt_manager import JWT_Manager
 
 
 app = Flask("sales-service")
-db_manager = DB_Manager()
 
 BASE_DIRECTORY = Path(__file__).resolve().parent
-jwt_manager = JWT_Manager(
-    BASE_DIRECTORY / "keys" / "private_key.pem",
-    BASE_DIRECTORY / "keys" / "public_key.pem",
-)
+
+_db_manager = None
+_jwt_manager = None
+
+
+def get_db_manager():
+    global _db_manager
+    if _db_manager is None:
+        _db_manager = DB_Manager()
+    return _db_manager
+
+
+def get_jwt_manager():
+    global _jwt_manager
+    if _jwt_manager is None:
+        _jwt_manager = JWT_Manager(
+            BASE_DIRECTORY / "keys" / "private_key.pem",
+            BASE_DIRECTORY / "keys" / "public_key.pem",
+        )
+    return _jwt_manager
 
 
 class APIError(Exception):
@@ -101,7 +116,7 @@ def require_auth(*allowed_types):
                 raise APIError("Se requiere un token de autenticación", 401)
 
             token = authorization.removeprefix("Bearer ").strip()
-            decoded = jwt_manager.decode(token) if token else None
+            decoded = get_jwt_manager().decode(token) if token else None
             if not decoded:
                 raise APIError("El token es inválido", 401)
 
@@ -198,12 +213,11 @@ def validate_product():
     }
 
 
-def validate_sale():
-    products = required_json("products")["products"]
+def validate_sale_products(products):
     if not isinstance(products, list) or not products:
         raise APIError("Debe enviar al menos un producto")
 
-    # Si el cliente manda el mismo product_id repetido en dos líneas distintas del body, se agrupan sumando cantidades en vez de crear os InvoiceItem separados para el mismo producto.
+    # Si el cliente manda el mismo product_id repetido en dos líneas distintas del body, se agrupan sumando cantidades en vez de crear dos InvoiceItem separados para el mismo producto.
     grouped = {}
     for position, product in enumerate(products):
         if not isinstance(product, dict):
@@ -234,8 +248,8 @@ def serialize(value):
 # --- Endpoints: autenticación ---
 def register_account(account_type, response_key):
     username, password = validate_credentials()
-    account = db_manager.insert_account(account_type, username, password)
-    token = jwt_manager.encode(
+    account = get_db_manager().insert_account(account_type, username, password)
+    token = get_jwt_manager().encode(
         {"id": account["id"], "account_type": account_type}
     )
     return jsonify(**{response_key: account}, token=token), 201
@@ -243,11 +257,11 @@ def register_account(account_type, response_key):
 
 def login_account(account_type):
     username, password = validate_credentials()
-    account = db_manager.get_account(account_type, username, password)
+    account = get_db_manager().get_account(account_type, username, password)
     if not account:
         raise APIError("Credenciales incorrectas", 401)
 
-    token = jwt_manager.encode(
+    token = get_jwt_manager().encode(
         {"id": account["id"], "account_type": account_type}
     )
     return jsonify(token=token), 200
@@ -277,7 +291,7 @@ def login_client():
 @require_auth("admin", "client")
 def me():
     identity = g.identity
-    account = db_manager.get_account_by_id(
+    account = get_db_manager().get_account_by_id(
         identity["account_type"],
         identity["id"],
     )
@@ -291,7 +305,7 @@ def me():
 @app.post("/products")
 @require_auth("admin")
 def create_product():
-    product = db_manager.add_fruit(**validate_product())
+    product = get_db_manager().create_product(**validate_product())
     return jsonify(
         message="Producto creado correctamente",
         product=serialize(product),
@@ -301,22 +315,22 @@ def create_product():
 @app.get("/products")
 @require_auth("admin")
 def get_products():
-    return jsonify(products=serialize(db_manager.get_fruits()))
+    return jsonify(products=serialize(get_db_manager().get_products()))
 
 
-@app.get("/products/<int:fruit_id>")
+@app.get("/products/<int:product_id>")
 @require_auth("admin")
-def get_product_by_id(fruit_id):
-    product = db_manager.get_fruit_by_id(fruit_id)
+def get_product_by_id(product_id):
+    product = get_db_manager().get_product_by_id(product_id)
     if not product:
         raise APIError("Producto no encontrado", 404)
     return jsonify(product=serialize(product))
 
 
-@app.put("/products/<int:fruit_id>")
+@app.put("/products/<int:product_id>")
 @require_auth("admin")
-def update_product(fruit_id):
-    product = db_manager.update_fruit(fruit_id, **validate_product())
+def update_product(product_id):
+    product = get_db_manager().update_product(product_id, **validate_product())
     if not product:
         raise APIError("Producto no encontrado", 404)
     return jsonify(
@@ -325,21 +339,33 @@ def update_product(fruit_id):
     )
 
 
-@app.delete("/products/<int:fruit_id>")
+@app.delete("/products/<int:product_id>")
 @require_auth("admin")
-def delete_product(fruit_id):
-    deleted_id = db_manager.delete_fruit(fruit_id)
+def delete_product(product_id):
+    deleted_id = get_db_manager().delete_product(product_id)
     if deleted_id is None:
         raise APIError("Producto no encontrado", 404)
     return jsonify(message="Producto eliminado correctamente", id=deleted_id)
 
 
 # --- Endpoints: ventas / facturas ---
-# Se deja restringido a "client" únicamente.
 @app.post("/sales")
-@require_auth("client")
+@require_auth("admin", "client")
 def create_sale():
-    invoice = db_manager.create_sale(g.identity["id"], validate_sale())
+    identity = g.identity
+    data = required_json("products")
+
+    if identity["account_type"] == "client":
+        client_id = identity["id"]
+    else:
+        if data.get("client_id") is None:
+            raise APIError(
+                "client_id es requerido cuando la compra la realiza un administrador"
+            )
+        client_id = parse_integer(data.get("client_id"), "client_id", 1)
+
+    products = validate_sale_products(data["products"])
+    invoice = get_db_manager().create_sale(client_id, products)
     return jsonify(
         message="Venta realizada correctamente",
         invoice=serialize(invoice),
@@ -354,7 +380,7 @@ def get_client_invoices(client_id):
     if identity["account_type"] == "client" and identity["id"] != client_id:
         raise APIError("No puede consultar facturas de otro cliente", 403)
 
-    invoices = db_manager.get_invoices_by_client_id(client_id)
+    invoices = get_db_manager().get_invoices_by_client_id(client_id)
     if invoices is None:
         raise APIError("Cliente no encontrado", 404)
     return jsonify(client_id=client_id, invoices=serialize(invoices))
@@ -363,7 +389,7 @@ def get_client_invoices(client_id):
 @app.get("/invoices/<int:invoice_id>")
 @require_auth("admin", "client")
 def get_invoice_by_id(invoice_id):
-    invoice = db_manager.get_invoice_by_id(invoice_id)
+    invoice = get_db_manager().get_invoice_by_id(invoice_id)
     if not invoice:
         raise APIError("Factura no encontrada", 404)
     if (

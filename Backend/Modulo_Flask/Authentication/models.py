@@ -29,9 +29,8 @@ class Client(Base):
     )
 
 
-# Tabla de productos (Frutas)
-class Fruit(Base):
-    __tablename__ = "fruits"
+class Product(Base):
+    __tablename__ = "products"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
@@ -73,13 +72,13 @@ class InvoiceItem(Base):
         ForeignKey("invoices.id", ondelete="CASCADE"),
         index=True,
     )
-    fruit_id: Mapped[int] = mapped_column(
+    product_id: Mapped[int] = mapped_column(
         # RESTRICT: no se puede borrar un producto que ya aparece en alguna facturas
-        ForeignKey("fruits.id", ondelete="RESTRICT")
+        ForeignKey("products.id", ondelete="RESTRICT")
     )
     product_name: Mapped[str] = mapped_column(String(30))
     quantity: Mapped[int]
     unit_price: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     subtotal: Mapped[Decimal] = mapped_column(Numeric(12, 2))
     invoice: Mapped[Invoice] = relationship(back_populates="items")
-    product: Mapped[Fruit] = relationship(back_populates="invoice_items")
+    product: Mapped[Product] = relationship(back_populates="invoice_items")

@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import selectinload
 
 from db_connection import DbConnection
-from models import Administrator, Client, Fruit, Invoice, InvoiceItem
+from models import Administrator, Client, Invoice, InvoiceItem, Product
 
 
 # Permite reutilizar los mismos métodos (insert_account, get_account, etc.)
@@ -59,7 +59,7 @@ class DB_Manager:
         }
 
     @staticmethod
-    def _fruit_dict(product):
+    def _product_dict(product):
         return {
             "id": product.id,
             "name": product.name,
@@ -79,7 +79,7 @@ class DB_Manager:
                 {
                     "id": item.id,
                     "invoice_id": item.invoice_id,
-                    "fruit_id": item.fruit_id,
+                    "product_id": item.product_id,
                     "product_name": item.product_name,
                     "quantity": item.quantity,
                     "unit_price": item.unit_price,
@@ -124,42 +124,42 @@ class DB_Manager:
             account = session.get(model, account_id)
             return self._account_dict(account) if account else None
 
-    # --- Productos (frutas) ---
-    def add_fruit(self, **values):
-        product = Fruit(**values)
+    # --- Productos ---
+    def create_product(self, **values):
+        product = Product(**values)
 
         with self.Session.begin() as session:
             session.add(product)
             session.flush()
-        return self._fruit_dict(product)
+        return self._product_dict(product)
 
-    def get_fruits(self):
-        stmt = select(Fruit).order_by(Fruit.id)
+    def get_products(self):
+        stmt = select(Product).order_by(Product.id)
 
         with self.Session() as session:
             products = session.scalars(stmt).all()
-            return [self._fruit_dict(product) for product in products]
+            return [self._product_dict(product) for product in products]
 
-    def get_fruit_by_id(self, fruit_id):
+    def get_product_by_id(self, product_id):
         with self.Session() as session:
-            product = session.get(Fruit, fruit_id)
-            return self._fruit_dict(product) if product else None
+            product = session.get(Product, product_id)
+            return self._product_dict(product) if product else None
 
-    def update_fruit(self, fruit_id, **values):
+    def update_product(self, product_id, **values):
         with self.Session.begin() as session:
-            product = session.get(Fruit, fruit_id)
+            product = session.get(Product, product_id)
             if not product:
                 return None
 
             for field, value in values.items():
                 setattr(product, field, value)
             session.flush()
-        return self._fruit_dict(product)
+        return self._product_dict(product)
 
-    def delete_fruit(self, fruit_id):
+    def delete_product(self, product_id):
         try:
             with self.Session.begin() as session:
-                product = session.get(Fruit, fruit_id)
+                product = session.get(Product, product_id)
                 if not product:
                     return None
 
@@ -167,7 +167,7 @@ class DB_Manager:
                 session.delete(product)
             return deleted_id
         except IntegrityError as error:
-            # ForeignKey ondelete="RESTRICT" en InvoiceItem.fruit_id impide  borrar un producto que ya aparece en alguna factura
+            # ForeignKey ondelete="RESTRICT" en InvoiceItem.product_id impide  borrar un producto que ya aparece en alguna factura
             raise ProductInUseError from error
 
     #  Ventas / facturas
@@ -187,8 +187,8 @@ class DB_Manager:
 
                 # with_for_update(): bloquea la fila del producto hasta que esta transacción termine. Sin esto, dos compras simultáneas podrían leer el mismo quantity disponible, ambas validar que hay stock, y terminar vendiendo más unidades de las que existen (race condition clásica).
                 product = session.scalar(
-                    select(Fruit)
-                    .where(Fruit.id == product_id)
+                    select(Product)
+                    .where(Product.id == product_id)
                     .with_for_update()
                 )
 
