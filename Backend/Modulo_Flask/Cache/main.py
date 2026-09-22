@@ -7,7 +7,7 @@ from pathlib import Path
 from flask import Flask, g, jsonify, request
 from werkzeug.exceptions import HTTPException
 
-from cache import CacheManager
+from cache import CacheManager, EntityCache
 from db import (
     ClientNotFoundError,
     DB_Manager,
@@ -23,11 +23,11 @@ app = Flask("sales-service")
 
 BASE_DIRECTORY = Path(__file__).resolve().parent
 
-REDIS_HOST = "cactus-salt-boot-89586.db.redis.io"
-REDIS_PORT = 18724
+REDIS_HOST = "PLACEHOLDER"
+REDIS_PORT = PLACEHOLDER
 
 #Esto debería estar en un .env sin embargo para efectos del proyecto esta hardcodeado aquí
-REDIS_PASSWORD = "HJ8yXOV0H78KeHK1yV4chwqkFHCA1DG0"
+REDIS_PASSWORD = "PLACEHOLDER"
 
 PRODUCT_CACHE_TTL = 300  # segundos
 
@@ -60,20 +60,14 @@ def get_cache_manager():
     return _cache_manager
 
 
-# --- Caché: productos ---
-def product_list_cache_key():
-    return "products:list"
+_product_cache = None
 
 
-def product_detail_cache_key(product_id):
-    return f"products:{product_id}"
-
-
-def invalidate_product_cache(product_id):
-    # Solo se invalida el detalle del producto afectado y la lista, porque la lista es una única key que representa el conjunto completo
-    cache_manager = get_cache_manager()
-    cache_manager.delete_data(product_detail_cache_key(product_id))
-    cache_manager.delete_data(product_list_cache_key())
+def get_product_cache():
+    global _product_cache
+    if _product_cache is None:
+        _product_cache = EntityCache(get_cache_manager(), "products")
+    return _product_cache
 
 
 class APIError(Exception):
@@ -340,8 +334,7 @@ def me():
 @require_auth("admin")
 def create_product():
     product = get_db_manager().create_product(**validate_product())
-    # No hay detalle previo que invalidar (el producto no existía), pero la lista cacheada ya no incluye este producto nuevo.
-    get_cache_manager().delete_data(product_list_cache_key())
+    get_product_cache().invalidate_list()
     return jsonify(
         message="Producto creado correctamente",
         product=serialize(product),
@@ -351,25 +344,23 @@ def create_product():
 @app.get("/products")
 @require_auth("admin")
 def get_products():
-    cache_manager = get_cache_manager()
-    key = product_list_cache_key()
+    product_cache = get_product_cache()
 
-    cached_body = cache_manager.get_data(key)
+    cached_body = product_cache.get_list()
     if cached_body is not None:
         return app.response_class(cached_body, mimetype="application/json")
 
     body = json.dumps(serialize({"products": get_db_manager().get_products()}))
-    cache_manager.store_data(key, body, time_to_live=PRODUCT_CACHE_TTL)
+    product_cache.store_list(body, time_to_live=PRODUCT_CACHE_TTL)
     return app.response_class(body, mimetype="application/json")
 
 
 @app.get("/products/<int:product_id>")
 @require_auth("admin")
 def get_product_by_id(product_id):
-    cache_manager = get_cache_manager()
-    key = product_detail_cache_key(product_id)
+    product_cache = get_product_cache()
 
-    cached_body = cache_manager.get_data(key)
+    cached_body = product_cache.get_detail(product_id)
     if cached_body is not None:
         return app.response_class(cached_body, mimetype="application/json")
 
@@ -378,7 +369,8 @@ def get_product_by_id(product_id):
         raise APIError("Producto no encontrado", 404)
 
     body = json.dumps(serialize({"product": product}))
-    cache_manager.store_data(key, body, time_to_live=PRODUCT_CACHE_TTL)
+    product_cache.store_detail(
+        product_id, body, time_to_live=PRODUCT_CACHE_TTL)
     return app.response_class(body, mimetype="application/json")
 
 
@@ -388,7 +380,7 @@ def update_product(product_id):
     product = get_db_manager().update_product(product_id, **validate_product())
     if not product:
         raise APIError("Producto no encontrado", 404)
-    invalidate_product_cache(product_id)
+    get_product_cache().invalidate(product_id)
     return jsonify(
         message="Producto actualizado correctamente",
         product=serialize(product),
@@ -401,7 +393,7 @@ def delete_product(product_id):
     deleted_id = get_db_manager().delete_product(product_id)
     if deleted_id is None:
         raise APIError("Producto no encontrado", 404)
-    invalidate_product_cache(deleted_id)
+    get_product_cache().invalidate(deleted_id)
     return jsonify(message="Producto eliminado correctamente", id=deleted_id)
 
 
@@ -423,6 +415,8 @@ def create_sale():
 
     products = validate_sale_products(data["products"])
     invoice = get_db_manager().create_sale(client_id, products)
+    get_product_cache().invalidate_many(
+        product["product_id"] for product in products)
     return jsonify(
         message="Venta realizada correctamente",
         invoice=serialize(invoice),
