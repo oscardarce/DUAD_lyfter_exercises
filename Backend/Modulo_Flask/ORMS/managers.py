@@ -1,72 +1,90 @@
-from sqlalchemy import insert, update, delete, select
-from tables import users_table, cars_table, addresses_table
+from sqlalchemy import select
+from models import User, Car, Address
+
+
+class UserNotFoundError(Exception):
+    """Se lanza cuando se referencia un user_id que no existe en la base de datos."""
+
+
+def validate_user_exists(session, user_id):
+
+    if user_id is not None and session.get(User, user_id) is None:
+        raise UserNotFoundError(f"No existe un usuario con id={user_id}")
 
 
 class BaseManager:
-    table = None  # cada subclase la define
+    model = None  # cada subclase la define
 
-    def __init__(self, engine):
-        self.engine = engine
+    def __init__(self, session_factory):
+        self.session_factory = session_factory
 
     def update(self, row_id, **fields):
-        if not fields:  # update sin valores genera SQL inválido (SET vacío)
+        if not fields:
             return False
-        statement = update(self.table).where(self.table.c.id == row_id).values(**fields)
-        with self.engine.begin() as conn:
-            return conn.execute(statement).rowcount > 0
+        with self.session_factory() as session:
+            obj = session.get(self.model, row_id)
+            if obj is None:
+                return False
+            for key, value in fields.items():
+                setattr(obj, key, value)
+            session.commit()
+            return True
 
     def delete(self, row_id):
-        statement = delete(self.table).where(self.table.c.id == row_id)
-        with self.engine.begin() as conn:
-            return conn.execute(statement).rowcount > 0
+        with self.session_factory() as session:
+            obj = session.get(self.model, row_id)
+            if obj is None:
+                return False
+            session.delete(obj)
+            session.commit()
+            return True
 
     def get_all(self):
-        with self.engine.connect() as conn:
-            return conn.execute(select(self.table)).all()
+        with self.session_factory() as session:
+            return session.scalars(select(self.model)).all()
 
 
 class UserManager(BaseManager):
-    table = users_table
+    model = User
 
     def create(self, email_address, phone_number=None):
-        statement = (
-            insert(users_table)
-            .values(email_address=email_address, phone_number=phone_number)
-            .returning(users_table.c.id)
-        )
-        with self.engine.begin() as conn:
-            return conn.execute(statement).scalar_one()
+        with self.session_factory() as session:
+            user = User(email_address=email_address, phone_number=phone_number)
+            session.add(user)
+            session.commit()
+            return user.id
 
 
 class CarManager(BaseManager):
-    table = cars_table
+    model = Car
 
     def create(self, brand, model, year, user_id=None):
-        statement = (
-            insert(cars_table)
-            .values(brand=brand, model=model, year=year, user_id=user_id)
-            .returning(cars_table.c.id)
-        )
-        with self.engine.begin() as conn:
-            return conn.execute(statement).scalar_one()
+        with self.session_factory() as session:
+            validate_user_exists(session, user_id)
+            car = Car(brand=brand, model=model, year=year, user_id=user_id)
+            session.add(car)
+            session.commit()
+            return car.id
 
     def assign_to_user(self, car_id, user_id):
-        validate = select(users_table.c.id).where(users_table.c.id == user_id)
-        statement = update(cars_table).where(cars_table.c.id == car_id).values(user_id=user_id)
-        with self.engine.begin() as conn:
-            if conn.execute(validate).first() is None:
+        with self.session_factory() as session:
+            validate_user_exists(session, user_id)
+            car = session.get(Car, car_id)
+            if car is None:
                 return False
-            return conn.execute(statement).rowcount > 0
+            car.user_id = user_id
+            session.commit()
+            return True
 
 
 class AddressManager(BaseManager):
-    table = addresses_table
+    model = Address
 
     def create(self, user_id, street, city, zip_code):
-        statement = (
-            insert(addresses_table)
-            .values(user_id=user_id, street=street, city=city, zip_code=zip_code)
-            .returning(addresses_table.c.id)
-        )
-        with self.engine.begin() as conn:
-            return conn.execute(statement).scalar_one()
+        with self.session_factory() as session:
+            validate_user_exists(session, user_id)
+            address = Address(user_id=user_id, street=street,
+                              city=city, zip_code=zip_code)
+            session.add(address)
+            session.commit()
+            return address.id
