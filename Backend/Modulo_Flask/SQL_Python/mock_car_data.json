@@ -1,0 +1,182 @@
+[
+  {
+    "brand": "Toyota",
+    "model": "Corolla",
+    "year": 2022,
+    "state": "used"
+  },
+  {
+    "brand": "Honda",
+    "model": "Civic",
+    "year": 2023,
+    "state": "new"
+  },
+  {
+    "brand": "Nissan",
+    "model": "Sentra",
+    "year": 2021,
+    "state": "used"
+  },
+  {
+    "brand": "Hyundai",
+    "model": "Elantra",
+    "year": 2024,
+    "state": "new"
+  },
+  {
+    "brand": "Kia",
+    "model": "Sportage",
+    "year": 2020,
+    "state": "used"
+  },
+  {
+    "brand": "Ford",
+    "model": "Mustang",
+    "year": 2023,
+    "state": "new"
+  },
+  {
+    "brand": "Chevrolet",
+    "model": "Camaro",
+    "year": 2019,
+    "state": "used"
+  },
+  {
+    "brand": "Mazda",
+    "model": "CX-5",
+    "year": 2022,
+    "state": "used"
+  },
+  {
+    "brand": "BMW",
+    "model": "X5",
+    "year": 2024,
+    "state": "new"
+  },
+  {
+    "brand": "Mercedes-Benz",
+    "model": "C-Class",
+    "year": 2021,
+    "state": "used"
+  },
+  {
+    "brand": "Audi",
+    "model": "A4",
+    "year": 2023,
+    "state": "new"
+  },
+  {
+    "brand": "Volkswagen",
+    "model": "Jetta",
+    "year": 2020,
+    "state": "used"
+  },
+  {
+    "brand": "Subaru",
+    "model": "Outback",
+    "year": 2022,
+    "state": "used"
+  },
+  {
+    "brand": "Jeep",
+    "model": "Wrangler",
+    "year": 2024,
+    "state": "new"
+  },
+  {
+    "brand": "Tesla",
+    "model": "Model 3",
+    "year": 2023,
+    "state": "used"
+  },
+  {
+    "brand": "Lexus",
+    "model": "RX",
+    "year": 2024,
+    "state": "new"
+  },
+  {
+    "brand": "Mitsubishi",
+    "model": "Outlander",
+    "year": 2021,
+    "state": "used"
+  },
+  {
+    "brand": "Suzuki",
+    "model": "Vitara",
+    "year": 2022,
+    "state": "used"
+  },
+  {
+    "brand": "Peugeot",
+    "model": "3008",
+    "year": 2023,
+    "state": "new"
+  },
+  {
+    "brand": "Renault",
+    "model": "Duster",
+    "year": 2020,
+    "state": "used"
+  },
+  {
+    "brand": "Volvo",
+    "model": "XC60",
+    "year": 2024,
+    "state": "new"
+  },
+  {
+    "brand": "Porsche",
+    "model": "Macan",
+    "year": 2022,
+    "state": "used"
+  },
+  {
+    "brand": "Land Rover",
+    "model": "Discovery",
+    "year": 2021,
+    "state": "used"
+  },
+  {
+    "brand": "Dodge",
+    "model": "Charger",
+    "year": 2023,
+    "state": "new"
+  },
+  {
+    "brand": "Ram",
+    "model": "1500",
+    "year": 2022,
+    "state": "used"
+  },
+  {
+    "brand": "GMC",
+    "model": "Sierra",
+    "year": 2024,
+    "state": "new"
+  },
+  {
+    "brand": "Fiat",
+    "model": "500",
+    "year": 2019,
+    "state": "used"
+  },
+  {
+    "brand": "Mini",
+    "model": "Cooper",
+    "year": 2023,
+    "state": "new"
+  },
+  {
+    "brand": "Acura",
+    "model": "MDX",
+    "year": 2021,
+    "state": "used"
+  },
+  {
+    "brand": "Infiniti",
+    "model": "Q50",
+    "year": 2022,
+    "state": "used"
+  }
+]
